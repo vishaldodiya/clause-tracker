@@ -11,15 +11,7 @@ class ContractMutations:
             name=contract_data.name,
         )
         db.add(contract)
-        for tag_id in contract_data.tags:
-            db.add_all([
-                ContractTagModel(
-                    id=uuid4(),
-                    contract_id=contract.id,
-                    tag_id=tag_id,
-                )
-            ])
-        db.commit()
+        db.flush()
         db.refresh(contract)
         return contract
 
@@ -29,7 +21,7 @@ class ContractMutations:
             id=contract_id,
             name=contract_data.name,
         )
-        db.merge(contract)
-        db.commit()
-        db.refresh(contract)
-        return contract
+        merged = db.merge(contract)
+        db.flush()
+        db.refresh(merged)
+        return merged

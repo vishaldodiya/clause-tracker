@@ -2,6 +2,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import database_exists, create_database
+from contextlib import contextmanager
 
 database_url = os.getenv("DATABASE_URL")
 
@@ -20,6 +21,15 @@ def init_db():
     from models import Base
     engine = get_engine()
     Base.metadata.create_all(engine)
+
+@contextmanager
+def transaction(db: Session):
+    try:
+        yield
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise e
 
 def get_db():
     db: Session = get_session()()

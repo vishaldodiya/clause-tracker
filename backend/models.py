@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String
+from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import DeclarativeBase
@@ -27,7 +27,7 @@ class ClauseModel(Base):
     paragraph_number: Mapped[int] = mapped_column(Integer)
     sentence_number: Mapped[int] = mapped_column(Integer)
     content: Mapped[str] = mapped_column(String(2000))
-    label_id: Mapped[UUID] = mapped_column(ForeignKey("labels.id"))
+    label_id: Mapped[UUID] = mapped_column(ForeignKey("labels.id"), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -35,14 +35,14 @@ class LabelModel(Base):
     __tablename__ = "labels"
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
-    label: Mapped[str] = mapped_column(String(100))
+    name: Mapped[str] = mapped_column(String(100))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
 class TagModel(Base):
     __tablename__ = "tags"
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
-    tag: Mapped[str] = mapped_column(String(100))
+    name: Mapped[str] = mapped_column(String(100))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
 class ContractTagModel(Base):
@@ -52,3 +52,5 @@ class ContractTagModel(Base):
     contract_id: Mapped[UUID] = mapped_column(ForeignKey("contract.id"))
     tag_id: Mapped[UUID] = mapped_column(ForeignKey("tags.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    UniqueConstraint("contract_id", "tag_id", name="uix_contract_tag")

@@ -1,20 +1,19 @@
 from datetime import datetime
+from uuid import uuid4
 
-from backend.schemas.contract import Tag, TagCreate
+from models import TagModel
+from schemas.contract import TagCreate
 from sqlalchemy.orm import Session
 
 class TagMutations:
     @staticmethod
-    def create_tag(db: Session, tag_create: TagCreate) -> Tag:
-        tag = Tag(
-            tag=tag_create.tag,
+    def create_tag(db: Session, tag_create: TagCreate) -> TagModel:
+        tag = TagModel(
+            id=uuid4(),
+            name=tag_create.name,
             created_at=datetime.now()
-        ) 
+        )
         db.add(tag)
         db.commit()
         db.refresh(tag)
         return tag
-
-    @staticmethod
-    def get_tags(db: Session) -> list[Tag]:
-        return db.query(Tag).all()
