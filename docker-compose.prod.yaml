@@ -1,0 +1,12 @@
+services:
+  frontend:
+    ports:
+      - "80:80"
+    build:
+      target: prod
+
+  backend:
+    ports:
+      - "8000:8000"
+    build:
+      target: prod

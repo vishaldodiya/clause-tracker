@@ -1,0 +1,26 @@
+services:
+  frontend:
+    ports:
+      - "4200:4200"
+    build: 
+      target: dev
+    environment:
+      - CI=true
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  backend:
+    ports:
+      - "8000:8000"
+    build:
+      target: dev
+    volumes:
+      - ./backend:/app
+      - /app/.venv
+    environment:
+      - WATCHFILES_FORCE_POLLING=true
+
+  db:
+    ports:
+      - "5432:5432"
