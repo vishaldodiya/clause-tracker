@@ -5,7 +5,7 @@ RUN npm install -g pnpm && pnpm install
 COPY . .
 
 FROM base AS dev
-CMD ["pnpm", "start", "--host", "0.0.0.0"]
+CMD ["pnpm", "start", "--host", "0.0.0.0", "--poll", "2000"]
 
 FROM base AS build
 RUN pnpm run build

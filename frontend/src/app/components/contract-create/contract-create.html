@@ -1,0 +1,21 @@
+<div class="flex items-center justify-center">
+    <form class="flex flex-col gap-4 min-w-lg">
+        <label class="flex flex-col">
+            Name
+            <input class="border p-2" type="text" />
+        </label>
+        <label class="flex flex-col">
+            Tags
+            <multi-select [items]="[
+                {name: 'non compete', id: '1'},
+                {name: 'construction', id: '2'},
+                {name: 'ip', id: '3'}
+            ]"/>
+        </label>
+        <label class="flex flex-col">
+            Upload contract:
+            <input class="border p-2 cursor-pointer" type="file" />
+        </label>
+        <button class="border p-2 cursor-pointer">Submit</button>
+    </form>
+</div>

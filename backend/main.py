@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from controller.label import LabelController
 from sqlalchemy.orm import Session
 from controller.tag import TagController
@@ -9,6 +10,13 @@ from database import get_db
 from uuid import UUID
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/api/v1/contracts", response_model=list[Contract])
 def get_contracts(db: Session = Depends(get_db)):
