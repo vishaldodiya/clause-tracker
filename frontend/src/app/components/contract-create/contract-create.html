@@ -1,21 +1,35 @@
-<div class="flex items-center justify-center">
-    <form class="flex flex-col gap-4 min-w-lg">
-        <label class="flex flex-col">
-            Name
-            <input class="border p-2" type="text" />
-        </label>
-        <label class="flex flex-col">
-            Tags
-            <multi-select [items]="[
-                {name: 'non compete', id: '1'},
-                {name: 'construction', id: '2'},
-                {name: 'ip', id: '3'}
-            ]"/>
-        </label>
-        <label class="flex flex-col">
-            Upload contract:
-            <input class="border p-2 cursor-pointer" type="file" />
-        </label>
-        <button class="border p-2 cursor-pointer">Submit</button>
-    </form>
+<div>
+    <button class="border p-2 cursor-pointer" (click)="openDialog()">Create new contract +</button>
 </div>
+@if (isOpen()) {
+    <div class="absolute top-0 left-0 inset-0 bg-black/40 backdrop-blur-xs w-screen h-screen flex items-center justify-center">
+        <div class="flex flex-col bg-white p-8 border z-0">
+            <div class="flex justify-end w-full items-center">
+                <button class="border cursor-pointer p-2" (click)="closeDialog()">x</button>
+            </div>
+            <form [formGroup]="contractForm" class="flex flex-col gap-4 min-w-lg">
+                <label class="flex flex-col">
+                    Name
+                    <input formControlName="name" class="border p-2" type="text" />
+                </label>
+                <label class="flex flex-col">
+                    Tags
+                    <multi-select
+                        formControlName="tags"
+                        [items]="[
+                            {name: 'non compete', id: '1'},
+                            {name: 'construction', id: '2'},
+                            {name: 'ip', id: '3'}
+                        ]"
+                        [limit]="1"
+                    />
+                </label>
+                <label class="flex flex-col">
+                    Upload contract:
+                    <input (change)="onFileChange($event)" class="border p-2 cursor-pointer" type="file" />
+                </label>
+                <button (click)="onSubmit($event)" class="border p-2 cursor-pointer">Submit</button>
+            </form>
+        </div>
+    </div>
+}

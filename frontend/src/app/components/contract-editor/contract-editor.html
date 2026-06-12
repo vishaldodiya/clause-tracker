@@ -1,0 +1,54 @@
+<div class="grid grid-cols-[3fr_minmax(0,1fr)]">
+    <div class="flex flex-col gap-4">
+        @for (paragraph of clauses(); track paragraph.paragraph_number) {
+            <div class="flex">
+                @for (clause of paragraph.clauses; track clause.id) {
+                    <div
+                        [class.text-blue-700]="selectedClause() === clause"
+                        [class.text-green-700]="clause.label_id && selectedClause() !== clause"
+                        [class.hover:text-red-700]="!clause.label_id && selectedClause() !== clause"
+                        [class.hover:text-blue-700]="clause.label_id && selectedClause() !== clause"
+                        class="p-1 cursor-pointer"
+                        (click)="selectClause(clause)"
+                    >
+                        {{ clause.content }}
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="flex flex-col gap-4">
+        @if (selectedClause()) {
+            <div class="border-b">
+                Content:
+                {{selectedClause()?.content}}
+            </div>
+            <div class="border-b">
+                Created at:
+                {{ selectedClause()?.created_at | date:'medium' }}
+            </div>
+            <div class="border-b">
+                Updated at:
+                {{selectedClause()?.updated_at | date:'medium'}}
+            </div>
+            <div>
+                Label:
+                <multi-select
+                    formControlName="tags"
+                    [items]="[{
+                        id: 'some-id',
+                        name: 'some-name'
+                    },
+                    {
+                        id: 'some-id-1',
+                        name: 'some-name-1'
+                    }]"
+                    [limit]="1"
+                />
+            </div>
+            <button class="border p-2 cursor-pointer" (click)="onSubmit($event)">Submit</button>
+        } @else {
+            <div>Select a clause</div>
+        }
+    </div>
+</div>

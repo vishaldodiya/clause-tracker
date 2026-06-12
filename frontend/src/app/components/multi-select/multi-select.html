@@ -1,24 +1,41 @@
 <div class="relative w-full">
-    <div class="flex flex-col gap-1">
-        <div class="flex gap-2 items-center">
-            @for (item of selectedItems(); track `selected-${item.id}`) {
-                <span class="flex gap-2 border rounded-full px-2 py-1">
-                    {{ item.name }} <button class="cursor-pointer flex items-center justify-center w-7 h-7 border rounded-full p-1" type="button" (mousedown)="removeItem(item)">x</button>
-                </span>
-            }
-        </div>
-        <label for="multi-select-text">
-            <input class="flex w-full border p-2" [value]="query()" (input)="updateQuery($event)" id="multi-select-text" placeholder="Select tags..." />
-        </label>
+    <div class="flex gap-2 items-center cursor-pointer" (click)="focusInput()">
+        @for (item of selectedItems(); track `selected-${item.id}`) {
+            <span class="flex gap-2 border rounded-full px-2 py-1">
+                {{ item.name }} <button class="cursor-pointer flex items-center justify-center w-7 h-7 border rounded-full p-1" type="button" (mousedown)="removeItem(item)">x</button>
+            </span>
+        }
+        Select items
+        <span class="ml-auto text-gray-400 text-xs">▾</span>
     </div>
-    @if (query() && filteredItems().length > 0) {
-        <div class="flex flex-col p-4 absolute bg-amber-50 w-full">
-            @for (item of filteredItems(); track `dropdown-${item.id}`) {
-                <div (click)="toggleItem(item)">
-                    <span>
-                        {{ selectedSet().has(item.id) ? '✓' : '' }}
-                    </span>
-                    {{item.name}}
+    @if (focused()) {
+        <div class="absolute w-full bg-white">
+            <label for="multi-select-text">
+                <input
+                    #searchInput
+                    class="flex w-full border p-2"
+                    [value]="query()"
+                    (input)="updateQuery($event)"
+                    id="multi-select-text"
+                    placeholder="Select tags..."
+                    (keydown)="onEnter($event)"
+                />
+            </label>
+            @if (filteredItems().length > 0) {
+                <div class="flex flex-col p-4">
+                    @for (item of filteredItems(); track `dropdown-${item.id}`) {
+                        <div (mousedown)="$event.preventDefault()" (click)="toggleItem(item)">
+                            <span>
+                                {{ selectedSet().has(item.id) ? '✓' : '' }}
+                            </span>
+                            {{item.name}}
+                        </div>
+                    }
+                </div>
+            }
+            @if (query() && !hasExactMatch()) {
+                <div class="px-4 py-2 text-sm text-gray-500">
+                    Press <kbd class="px-1 border rounded text-xs">Enter</kbd> to create "{{ query() }}"
                 </div>
             }
         </div>

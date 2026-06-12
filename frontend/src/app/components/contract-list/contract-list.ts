@@ -1,16 +1,17 @@
 import { Component, inject, signal } from "@angular/core";
 import { ContractService } from "../../services/contract.service";
-import { Contract } from "../../models/contract.model";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: 'contract-list',
-    templateUrl: './contract-list.html'
+    templateUrl: './contract-list.html',
+    imports: [DatePipe]
 })
 export class ContractList {
     private contractService = inject(ContractService)
 
     isLoading = signal<boolean>(false)
-    contracts = signal<Contract[]>([])
+    contracts = this.contractService.contracts
 
     ngOnInit() {
         this.loadContracts()
@@ -19,16 +20,10 @@ export class ContractList {
     loadContracts() {
         this.isLoading.set(true)
         this.contractService.getContracts().subscribe({
-            next: (data) => {
-                this.contracts.set(data)
-                this.isLoading.set(false)
-            },
+            next: () => this.isLoading.set(false),
             error: (error) => {
                 console.error(error)
                 this.isLoading.set(false)
-            },
-            complete: () => {
-                console.log("data loading completes")
             }
         })
     }

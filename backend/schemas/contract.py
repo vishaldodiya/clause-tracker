@@ -41,6 +41,9 @@ class Clause(ClauseUpdate):
     content: str
     label_id: UUID | None
 
+class Paragraph(BaseModel):
+    paragraph_number: int
+    clauses: list[Clause]
 
 class LabelCreate(BaseModel):
     name: str

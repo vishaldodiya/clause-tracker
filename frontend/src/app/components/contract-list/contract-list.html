@@ -1,4 +1,4 @@
-<div class="p-8">
+<div>
     <table class="grid w-full grid-cols-[auto_auto_auto_auto_auto] border p-4 gap-4">
         <thead class="grid col-span-5 grid-cols-subgrid text-sm border-b pb-2">
             <tr class="grid col-span-5 grid-cols-subgrid text-left">
@@ -9,22 +9,24 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody class="grid col-span-5 grid-cols-subgrid text-sm">
-            <tr class="grid col-span-5 grid-cols-subgrid text-left">
-                <td>Some name</td>
-                <td class="flex gap-2 items-center">
-                    <div class="border p-2">tag1</div>
-                    <div class="border p-2">tag2</div>
-                    <div class="border p-2">tag3</div>
-                </td>
-                <td>Some data</td>
-                <td>Some date</td>
-                <td class="flex gap-2 items-center">
-                    <button class="border cursor-pointer p-2">Delete</button>
-                    <button class="border cursor-pointer p-2">Edit</button>
-                    <button class="border cursor-pointer p-2">Open</button>
-                </td>
-            </tr>
+        <tbody class="grid col-span-5 grid-cols-subgrid text-sm gap-4">
+            @for (contract of contracts(); track contract.id) {
+                <tr class="grid col-span-5 grid-cols-subgrid text-left border-b p-2">
+                    <td>{{contract.name}}</td>
+                    <td class="flex gap-2 items-center">
+                        @for (tag of contract.tags; track tag.id) {
+                            <div class="border p-2">{{tag.name}}</div>
+                        }
+                    </td>
+                    <td>{{contract.created_at | date:'medium'}}</td>
+                    <td>{{contract.updated_at | date:'medium'}}</td>
+                    <td class="flex gap-2 items-center">
+                        <button class="border cursor-pointer p-2">Delete</button>
+                        <button class="border cursor-pointer p-2">Edit</button>
+                        <button class="border cursor-pointer p-2">Open</button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

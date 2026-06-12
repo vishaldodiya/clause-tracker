@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from controller.tag import TagController
 from controller.contract import ContractController
 from controller.clause import ClauseController
-from schemas.contract import Clause, ClauseUpdate, Contract, ContractCreate, Tag, TagCreate, Label, LabelCreate
+from schemas.contract import Clause, ClauseUpdate, Contract, ContractCreate, Tag, TagCreate, Label, LabelCreate, Paragraph
 from database import get_db
 from uuid import UUID
 
@@ -57,7 +57,7 @@ def get_labels(db: Session = Depends(get_db)):
 def create_label(label_data: LabelCreate, db: Session = Depends(get_db)):
     return LabelController.create_label(db=db, label_data=label_data)
 
-@app.get("/api/v1/clauses", response_model=list[Clause])
+@app.get("/api/v1/clauses", response_model=list[Paragraph])
 def get_clauses(db: Session = Depends(get_db)):
     return ClauseController.get_clauses(db=db)
 
