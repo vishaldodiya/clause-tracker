@@ -1,8 +1,9 @@
-import { Component, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { Clause, Paragraph } from "../../models/caluse.model";
 import { MultiSelect } from "../multi-select/multi-select";
 import { DatePipe } from "@angular/common";
 import { ɵInternalFormsSharedModule } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: 'contract-editor',
@@ -10,6 +11,8 @@ import { ɵInternalFormsSharedModule } from "@angular/forms";
     imports: [MultiSelect, DatePipe, ɵInternalFormsSharedModule]
 })
 export class ContractEditor {
+    private activatedRoute = inject(ActivatedRoute)
+
     clauses = signal<Paragraph[]>([
         {
             paragraph_number: 0,

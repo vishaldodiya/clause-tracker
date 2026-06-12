@@ -13,7 +13,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=["http://localhost:4200", "http://localhost:80", "http://localhost"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -47,6 +47,7 @@ def get_tags(db: Session = Depends(get_db)):
 
 @app.post("/api/v1/tags", response_model=Tag)
 def create_tag(tag_data: TagCreate, db: Session = Depends(get_db)):
+    print(tag_data)
     return TagController.create_tag(db=db, tag_data=tag_data)
 
 @app.get("/api/v1/labels", response_model=list[Label])

@@ -1,7 +1,7 @@
 import { Component, computed, effect, ElementRef, HostListener, input, model, output, signal, ViewChild } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-interface SelectableItem {
+export interface SelectableItem {
     id: string
     name: string
 }
@@ -43,6 +43,7 @@ export class MultiSelect implements ControlValueAccessor {
                         : s
                 )
             )
+            this.onChange(this.selectedItems())
         })
     }
 

@@ -16,12 +16,8 @@
                     Tags
                     <multi-select
                         formControlName="tags"
-                        [items]="[
-                            {name: 'non compete', id: '1'},
-                            {name: 'construction', id: '2'},
-                            {name: 'ip', id: '3'}
-                        ]"
-                        [limit]="1"
+                        [items]="tagOptionList()"
+                        (createItem)="onTagCreate($event)"
                     />
                 </label>
                 <label class="flex flex-col">

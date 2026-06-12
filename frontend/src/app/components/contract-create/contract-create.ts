@@ -1,7 +1,8 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms"
-import { MultiSelect } from "../multi-select/multi-select";
+import { MultiSelect, SelectableItem } from "../multi-select/multi-select";
 import { ContractService } from "../../services/contract.service";
+import { TagService } from "../../services/tag.service";
 
 @Component({
     selector: 'contract-create',
@@ -10,10 +11,19 @@ import { ContractService } from "../../services/contract.service";
 })
 export class ContractCreate {
     private contractService = inject(ContractService)
+    private tagService = inject(TagService)
     private fb = inject(FormBuilder)
 
     isOpen = signal<boolean>(false)
     selectedFile = signal<File | null>(null)
+    tags = this.tagService.tags
+
+    tagOptionList = computed<SelectableItem[]>(() => {
+        return this.tags().map((tag) => ({
+            id: tag.id,
+            name: tag.name
+        }))
+    })
 
     contractForm = this.fb.group({
         name: ['', Validators.required],
@@ -42,5 +52,27 @@ export class ContractCreate {
 
     closeDialog() {
         this.isOpen.set(false)
+    }
+
+    onTagCreate(name: string) {
+        this.tagService.createTag({name}).subscribe({
+            next: (tag) => {
+                console.log(tag)
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
+    }
+
+    ngOnInit() {
+        this.tagService.getTags().subscribe({
+            next: (tags) => {
+                console.log(tags)
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
     }
 }

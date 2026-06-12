@@ -9,7 +9,7 @@ export const routes: Routes = [
         component: Home
     },
     {
-        path: 'edit/:id',
+        path: 'contracts/:id',
         component: ContractEditor
     }
 ];

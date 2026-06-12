@@ -3,3 +3,7 @@ export interface Tag {
     name: string
     created_at: Date
 }
+
+export interface TagCreate {
+    name: string
+}

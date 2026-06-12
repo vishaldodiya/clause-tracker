@@ -9,6 +9,6 @@ class TagController:
         return TagsQueries.get_tags(db=db)
     
     @staticmethod
-    def create_tag(db: Session, tag_create: TagCreate) -> Tag:
-        tag = TagMutations.create_tag(db=db, tag_create=tag_create)
+    def create_tag(db: Session, tag_data: TagCreate) -> Tag:
+        tag = TagMutations.create_tag(db=db, tag_create=tag_data)
         return tag
