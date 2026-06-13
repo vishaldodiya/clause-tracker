@@ -1,52 +1,51 @@
-<div class="grid grid-cols-[3fr_minmax(0,1fr)]">
-    <div class="flex flex-col gap-4">
-        @for (paragraph of clauses(); track paragraph.paragraph_number) {
-            <div class="flex">
+<div class="grid h-full grid-cols-[3fr_minmax(0,1fr)] gap-4">
+    <div class="flex flex-col gap-4 overflow-scroll max-h-max">
+        @for (paragraph of clauses(); track `paragraph-${paragraph.paragraph_number}`) {
+            <div class="flex-inline gap-2">
                 @for (clause of paragraph.clauses; track clause.id) {
-                    <div
-                        [class.text-blue-700]="selectedClause() === clause"
-                        [class.text-green-700]="clause.label_id && selectedClause() !== clause"
-                        [class.hover:text-red-700]="!clause.label_id && selectedClause() !== clause"
-                        [class.hover:text-blue-700]="clause.label_id && selectedClause() !== clause"
-                        class="p-1 cursor-pointer"
+                    <span
+                        [class.border]="selectedClause() === clause"
+                        [class.bg-[#f6e8c8]]="!clause.label_id && selectedClause() === clause"
+                        [class.bg-[#DEE7D5]]="clause.label_id"
+                        [class.hover:bg-[#f6e8c8]]="!clause.label_id && selectedClause() !== clause"
+                        class="px-0.5 py-0.5 mr-1 cursor-pointer rounded-md"
                         (click)="selectClause(clause)"
                     >
                         {{ clause.content }}
-                    </div>
+                    </span>
                 }
             </div>
         }
     </div>
-    <div class="flex flex-col gap-4">
+    <div class="border-l border-[#f2ede4] p-2">
         @if (selectedClause()) {
-            <div class="border-b">
-                Content:
-                {{selectedClause()?.content}}
-            </div>
-            <div class="border-b">
-                Created at:
-                {{ selectedClause()?.created_at | date:'medium' }}
-            </div>
-            <div class="border-b">
-                Updated at:
-                {{selectedClause()?.updated_at | date:'medium'}}
-            </div>
-            <div>
-                Label:
-                <multi-select
-                    formControlName="tags"
-                    [items]="[{
-                        id: 'some-id',
-                        name: 'some-name'
-                    },
-                    {
-                        id: 'some-id-1',
-                        name: 'some-name-1'
-                    }]"
-                    [limit]="1"
-                />
-            </div>
-            <button class="border p-2 cursor-pointer" (click)="onSubmit($event)">Submit</button>
+            <form [formGroup]="clauseForm" class="flex flex-col gap-4">
+                <div class="border border-[#f2ede4] bg-white flex flex-col p-4 rounded-md">
+                    "{{selectedClause()?.content}}"
+                </div>
+                <div class="flex flex-col">
+                    Created at:
+                    <div class="border border-[#f2ede4] bg-white p-4 rounded-md">
+                        {{ selectedClause()?.created_at | date:'medium' }}
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    Updated at:
+                    <div class="border border-[#f2ede4] bg-white p-4 rounded-md">
+                        {{selectedClause()?.updated_at | date:'medium'}}
+                    </div>
+                </div>
+                <div>
+                    Label:
+                    <multi-select
+                        formControlName="labels"
+                        [items]="labelOptionList()"
+                        [limit]="1"
+                        (createItem)="createLabel($event)"
+                    />
+                </div>
+                <button class="border border-[#f2ede4] bg-white p-2 cursor-pointer" (click)="onSubmit($event)">Submit</button>
+            </form>
         } @else {
             <div>Select a clause</div>
         }

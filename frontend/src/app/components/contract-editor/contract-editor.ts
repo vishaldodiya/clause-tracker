@@ -1,75 +1,95 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { Clause, Paragraph } from "../../models/caluse.model";
-import { MultiSelect } from "../multi-select/multi-select";
+import { MultiSelect, SelectableItem } from "../multi-select/multi-select";
 import { DatePipe } from "@angular/common";
-import { ɵInternalFormsSharedModule } from "@angular/forms";
+import { FormBuilder, ɵInternalFormsSharedModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
+import { ClauseService } from "../../services/clause.service";
+import { LabelService } from "../../services/label.service";
+import { Label } from "../../models/label.model";
 
 @Component({
     selector: 'contract-editor',
     templateUrl: './contract-editor.html',
-    imports: [MultiSelect, DatePipe, ɵInternalFormsSharedModule]
+    imports: [MultiSelect, DatePipe, ɵInternalFormsSharedModule, ReactiveFormsModule]
 })
 export class ContractEditor {
+    private labelService = inject(LabelService)
     private activatedRoute = inject(ActivatedRoute)
+    private clauseService = inject(ClauseService)
+    private fb = inject(FormBuilder)
 
-    clauses = signal<Paragraph[]>([
-        {
-            paragraph_number: 0,
-            clauses: [
-                {
-                    id: '1',
-                    content: 'This is the first clause.',
-                    paragraph_id: 0,
-                    sentence_id: 0,
-                    label_id: '',
-                    created_at: new Date(),
-                    updated_at: new Date()
-                },
-                {
-                    id: '2',
-                    content: 'This is the second clause.',
-                    paragraph_id: 0,
-                    sentence_id: 1,
-                    label_id: 'label2',
-                    created_at: new Date(),
-                    updated_at: new Date()
-                }
-            ]
-        },
-        {
-            paragraph_number: 1,
-            clauses: [
-                {
-                    id: '3',
-                    content: 'This is the third clause.',
-                    paragraph_id: 1,
-                    sentence_id: 0,
-                    label_id: 'label3',
-                    created_at: new Date(),
-                    updated_at: new Date()
-                },
-                {
-                    id: '4',
-                    content: 'This is the fourth clause.',
-                    paragraph_id: 1,
-                    sentence_id: 1,
-                    label_id: 'label4',
-                    created_at: new Date(),
-                    updated_at: new Date()
-                }
-            ]
-        }
-    ])
     selectedClause = signal<Clause | null>(null)
+
+    clauses = this.clauseService.clauses
+    labels = this.labelService.labels
+
+    clauseForm = this.fb.group({
+        labels: [[] as Label[]]
+    })
+
+    labelOptionList = computed<SelectableItem[]>(() => {
+        return this.labels().map((label) => ({ id: label.id, name: label.name }))
+    })
 
     selectClause(clause: Clause) {
         this.selectedClause.set(clause)
+        const selectedLabel = this.labels().find((label) => label.id === clause.label_id)
+        this.clauseForm.patchValue({ labels: selectedLabel ? [selectedLabel] : [] })
     }
 
     onSubmit(event: MouseEvent) {
         event.preventDefault()
 
-        console.log()
+        const selectedClause = this.selectedClause()
+        const labels = this.clauseForm.value.labels
+        const label = Array.isArray(labels) ? labels[0] : null
+
+        if (!selectedClause) {
+            return
+        }
+
+        this.clauseService.updateClause({
+            ...selectedClause,
+            label_id: label && label.id
+        }).subscribe({
+            next: (clause: Clause) => {
+                console.log(clause)
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
+    }
+
+    createLabel(name: string) {
+        this.labelService.createLabel({ name }).subscribe({
+            next: (label) => {
+                console.log(label)
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
+    }
+
+    ngOnInit() {
+        const contractId = this.activatedRoute.snapshot.paramMap.get('id') ?? ''
+        this.clauseService.getClauses(contractId).subscribe({
+            next: (clauses) => {
+                console.log(clauses)
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
+        this.labelService.getLabels().subscribe({
+            next: (labels) => {
+                console.log(labels)
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
     }
 }

@@ -1,6 +1,6 @@
-<div>
-    <table class="grid w-full grid-cols-[auto_auto_auto_auto_auto] border p-4 gap-4">
-        <thead class="grid col-span-5 grid-cols-subgrid text-sm border-b pb-2">
+<div class="bg-[#f3ede2]">
+    <table class="grid w-full grid-cols-[auto_auto_auto_auto_auto] border p-4 gap-4 border-[#ebe6db] rounded-md">
+        <thead class="grid col-span-5 grid-cols-subgrid text-sm border-b border-[#ebe6db] pb-2">
             <tr class="grid col-span-5 grid-cols-subgrid text-left">
                 <th>Contract Name</th>
                 <th>Tags</th>
@@ -11,19 +11,19 @@
         </thead>
         <tbody class="grid col-span-5 grid-cols-subgrid text-sm gap-4">
             @for (contract of contracts(); track contract.id) {
-                <tr class="grid col-span-5 grid-cols-subgrid text-left border-b p-2">
+                <tr class="grid col-span-5 grid-cols-subgrid text-left border-b border-[#ebe6db] p-2">
                     <td>{{contract.name}}</td>
                     <td class="flex gap-2 items-center">
                         @for (tag of contract.tags; track tag.id) {
-                            <div class="border p-2">{{tag.name}}</div>
+                            <div class="border border-[#ebe6db] rounded-md bg-[#f6e8c8] p-2">{{tag.name}}</div>
                         }
                     </td>
                     <td>{{contract.created_at | date:'medium'}}</td>
                     <td>{{contract.updated_at | date:'medium'}}</td>
                     <td class="flex gap-2 items-center">
-                        <button class="border cursor-pointer p-2">Delete</button>
-                        <button class="border cursor-pointer p-2">Edit</button>
-                        <button class="border cursor-pointer p-2">Open</button>
+                        <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md">Delete</button>
+                        <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md">Edit</button>
+                        <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md" (click)="openContract(contract.id)">Open</button>
                     </td>
                 </tr>
             }

@@ -17,7 +17,6 @@ export interface SelectableItem {
 })
 export class MultiSelect implements ControlValueAccessor {
     items = input.required<SelectableItem[]>()
-    selected = signal<SelectableItem[]>([])
     limit = input<number>(-1)
     query = model<string>('')
     selectedItems = signal<SelectableItem[]>([])
@@ -45,10 +44,6 @@ export class MultiSelect implements ControlValueAccessor {
             )
             this.onChange(this.selectedItems())
         })
-    }
-
-    ngOnInit() {
-        this.selectedItems.set(this.selected())
     }
 
     filteredItems = computed(() => {
@@ -111,7 +106,8 @@ export class MultiSelect implements ControlValueAccessor {
     }
 
     writeValue(val: SelectableItem[]): void {
-        this.selected.set(val ?? [])
+        console.log("form write value", val)
+        this.selectedItems.set(val ?? [])
     }
 
     registerOnChange(fn: any): void {

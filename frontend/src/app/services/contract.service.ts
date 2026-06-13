@@ -14,7 +14,7 @@ export class ContractService {
     private baseUrl = 'http://localhost:8000/api/v1/contracts'
 
     getContracts(): Observable<Contract[]> {
-        return this.http.get<Contract[]>(`${this.baseUrl}`).pipe(
+        return this.http.get<Contract[]>(this.baseUrl).pipe(
             tap(contracts => this._contracts.set(contracts))
         )
     }
@@ -33,10 +33,14 @@ export class ContractService {
         })
 
         formData.append('file', file)
-        return this.http.post<Contract>(`${this.baseUrl}`, formData).pipe(
+        return this.http.post<Contract>(this.baseUrl, formData).pipe(
             tap((contract: Contract) => {
                 this._contracts.update((contracts) => [...contracts, contract])
             })
         )
+    }
+
+    getContarct(id: string): Observable<Contract> {
+        return this.http.get<Contract>(`${this.baseUrl}/${id}`)
     }
 }

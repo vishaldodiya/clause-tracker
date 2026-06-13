@@ -5,11 +5,12 @@ from schemas.contract import ClauseUpdate
 from queries.clauses import ClauseQueries
 from models import ClauseModel
 from schemas.contract import Paragraph
+from uuid import UUID
 
 class ClauseController:
     @staticmethod
-    def get_clauses(db: Session) -> list[Paragraph]:
-        clauses = ClauseQueries.get_clauses(db=db)
+    def get_clauses(db: Session, contract_id: UUID) -> list[Paragraph]:
+        clauses = ClauseQueries.get_clauses(db=db, contract_id=contract_id)
         grouped: dict[int, list[ClauseModel]] = defaultdict(list)
 
         for clause in clauses:

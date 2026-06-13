@@ -1,9 +1,9 @@
 export interface Clause {
     id: string
     content: string
-    paragraph_id: number
-    sentence_id: number
-    label_id: string
+    paragraph_number: number
+    sentence_number: number
+    label_id: string | null
     created_at: Date
     updated_at: Date
 }

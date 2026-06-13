@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
-import { Home } from './components/home/home';
-import { ContractCreate } from './components/contract-create/contract-create';
 import { ContractEditor } from './components/contract-editor/contract-editor';
+import { Dashboard } from './components/dashboard/dashboard';
 
 export const routes: Routes = [
     {
         path: '',
-        component: Home
+        component: Dashboard
     },
     {
         path: 'contracts/:id',

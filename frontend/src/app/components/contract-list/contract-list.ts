@@ -1,6 +1,7 @@
 import { Component, inject, signal } from "@angular/core";
 import { ContractService } from "../../services/contract.service";
 import { DatePipe } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'contract-list',
@@ -9,6 +10,7 @@ import { DatePipe } from "@angular/common";
 })
 export class ContractList {
     private contractService = inject(ContractService)
+    private router = inject(Router)
 
     isLoading = signal<boolean>(false)
     contracts = this.contractService.contracts
@@ -26,5 +28,9 @@ export class ContractList {
                 this.isLoading.set(false)
             }
         })
+    }
+
+    openContract(id: string) {
+        this.router.navigate([`/contracts/${id}`])
     }
 }

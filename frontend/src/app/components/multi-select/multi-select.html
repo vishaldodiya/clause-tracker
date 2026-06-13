@@ -1,19 +1,19 @@
-<div class="relative w-full">
-    <div class="flex gap-2 items-center cursor-pointer" (click)="focusInput()">
+<div class="relative w-full ">
+    <div class="flex gap-2 items-center cursor-pointer border-[#f6e8c8] bg-white border p-2 rounded-md" (click)="focusInput()">
         @for (item of selectedItems(); track `selected-${item.id}`) {
-            <span class="flex gap-2 border rounded-full px-2 py-1">
-                {{ item.name }} <button class="cursor-pointer flex items-center justify-center w-7 h-7 border rounded-full p-1" type="button" (mousedown)="removeItem(item)">x</button>
+            <span class="flex gap-2 border border-[#f6e8c8] rounded-full px-2 py-1">
+                {{ item.name }} <button class="cursor-pointer flex items-center justify-center w-7 h-7 border rounded-full p-1 border-[#f6e8c8]" type="button" (mousedown)="removeItem(item)">x</button>
             </span>
         }
         Select items
         <span class="ml-auto text-gray-400 text-xs">▾</span>
     </div>
     @if (focused()) {
-        <div class="absolute w-full bg-white">
+        <div class="absolute w-full bg-white border-[#f6e8c8] rounded-md p-4 max-h-72 overflow-scroll">
             <label for="multi-select-text">
                 <input
                     #searchInput
-                    class="flex w-full border p-2"
+                    class="flex w-full border p-2 border-[#f6e8c8] rounded-md"
                     [value]="query()"
                     (input)="updateQuery($event)"
                     id="multi-select-text"
@@ -22,9 +22,9 @@
                 />
             </label>
             @if (filteredItems().length > 0) {
-                <div class="flex flex-col p-4">
+                <div class="flex flex-col p-4 gap-2">
                     @for (item of filteredItems(); track `dropdown-${item.id}`) {
-                        <div (mousedown)="$event.preventDefault()" (click)="toggleItem(item)">
+                        <div class="border-b border-[#f6e8c8] p-1 cursor-pointer" (mousedown)="$event.preventDefault()" (click)="toggleItem(item)">
                             <span>
                                 {{ selectedSet().has(item.id) ? '✓' : '' }}
                             </span>

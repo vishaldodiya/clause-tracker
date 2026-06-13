@@ -59,8 +59,8 @@ def create_label(label_data: LabelCreate, db: Session = Depends(get_db)):
     return LabelController.create_label(db=db, label_data=label_data)
 
 @app.get("/api/v1/clauses", response_model=list[Paragraph])
-def get_clauses(db: Session = Depends(get_db)):
-    return ClauseController.get_clauses(db=db)
+def get_clauses(contract_id: UUID | None = None, db: Session = Depends(get_db)):
+    return ClauseController.get_clauses(db=db, contract_id=contract_id)
 
 @app.put("/api/v1/clauses/{clause_id}", response_model=Clause)
 def update_clause(clause_id: UUID, clause_data: ClauseUpdate, db: Session = Depends(get_db)):
