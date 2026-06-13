@@ -1,8 +1,11 @@
-<div class="flex items-center w-fill h-15 border-b border-[#f2ede4] p-8">
+<div class="flex items-center w-full h-15 border-b border-[#f2ede4] p-8 gap-4">
     @if (contract()) {
-        <button class="cursor-pointer p-4"><</button>
+        <button class="cursor-pointer p-4" (click)="navigateToHome()"><</button>
     }
-    <div>
-        {{heading()}}
-    </div>
+    <div>{{ heading() }}</div>
+    @if (currentProgress()) {
+        <div class="ml-auto">
+            <progress-bar [progress]="currentProgress()!" />
+        </div>
+    }
 </div>

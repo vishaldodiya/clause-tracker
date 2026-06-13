@@ -1,0 +1,14 @@
+<div class="flex flex-col">
+    <div class="flex gap-1 justify-between">
+        @for (_ of 10 | repeat; track `bar-${$index}`; let i = $index) {
+            <span
+                [class.bg-[#56a08e]]="i < progressFraction()"
+                [class.bg-white]="i >= progressFraction()"
+                class="w-3 h-2 border border-[#ebe6db] rounded-xs">
+            </span>
+        }
+    </div>
+    <div class="flex justify-end">
+        {{progress()?.labelled ?? 0}} / {{progress()?.total ?? 0}} labelled
+    </div>
+</div>

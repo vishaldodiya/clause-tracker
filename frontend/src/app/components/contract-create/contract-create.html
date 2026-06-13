@@ -1,10 +1,11 @@
 <div>
-    <button class="border p-2 cursor-pointer border-[#f2ede4] bg-white rounded-md" (click)="openDialog()">Create new contract +</button>
+    <button class="border p-2 cursor-pointer border-[#f2ede4] bg-white rounded-md" (click)="openDialog()">Add new contract +</button>
 </div>
 @if (isOpen()) {
-    <div class="absolute top-0 left-0 inset-0 bg-black/40 backdrop-blur-xs w-screen h-screen flex items-center justify-center">
-        <div class="flex flex-col bg-[#faf7f1] p-8 border border-[#f6e8c8] rounded-md z-0">
-            <div class="flex justify-end w-full items-center">
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-xs w-screen h-screen flex items-center justify-center z-50">
+        <div class="flex flex-col bg-[#faf7f1] p-8 border border-[#f6e8c8] rounded-md">
+            <div class="flex justify-between w-full items-center">
+                <div>Add contract</div>
                 <button class="border border-[#f6e8c8] rounded-md cursor-pointer p-2" (click)="closeDialog()">x</button>
             </div>
             <form [formGroup]="contractForm" class="flex flex-col gap-4 min-w-lg">

@@ -7,19 +7,28 @@ import { ActivatedRoute } from "@angular/router";
 import { ClauseService } from "../../services/clause.service";
 import { LabelService } from "../../services/label.service";
 import { Label } from "../../models/label.model";
+import { ContractService } from "../../services/contract.service";
+import { ContextService } from "../../services/context.service";
+import { ProgressService } from "../../services/progress.service";
+import { forkJoin, of } from "rxjs";
+import { Loading } from "../loading/loading";
 
 @Component({
     selector: 'contract-editor',
     templateUrl: './contract-editor.html',
-    imports: [MultiSelect, DatePipe, ɵInternalFormsSharedModule, ReactiveFormsModule]
+    imports: [MultiSelect, DatePipe, ɵInternalFormsSharedModule, ReactiveFormsModule, Loading]
 })
 export class ContractEditor {
     private labelService = inject(LabelService)
     private activatedRoute = inject(ActivatedRoute)
     private clauseService = inject(ClauseService)
+    private contractService = inject(ContractService)
+    private progressService = inject(ProgressService)
+    private context = inject(ContextService)
     private fb = inject(FormBuilder)
 
     selectedClause = signal<Clause | null>(null)
+    isLoading = signal<boolean>(false)
 
     clauses = this.clauseService.clauses
     labels = this.labelService.labels
@@ -54,6 +63,7 @@ export class ContractEditor {
             label_id: label && label.id
         }).subscribe({
             next: (clause: Clause) => {
+                console.log('uodted', this.clauses())
                 console.log(clause)
             },
             error: (error) => {
@@ -75,20 +85,22 @@ export class ContractEditor {
 
     ngOnInit() {
         const contractId = this.activatedRoute.snapshot.paramMap.get('id') ?? ''
-        this.clauseService.getClauses(contractId).subscribe({
-            next: (clauses) => {
-                console.log(clauses)
-            },
+        const requireContractData = this.context.contract()?.id !== contractId
+
+        this.isLoading.set(true)
+        forkJoin({
+            clauses: this.clauseService.getClauses(contractId),
+            labels: this.labelService.getLabels(),
+            contract: requireContractData ? this.contractService.getContarct(contractId) : of(null),
+            progress: requireContractData ? this.progressService.getContractProgress() : of(null)
+        }).subscribe({
+            next: (({ contract }) => {
+                if (contract) this.context.setContract(contract)
+                this.isLoading.set(false)
+            }),
             error: (error) => {
-                console.log(error)
-            }
-        })
-        this.labelService.getLabels().subscribe({
-            next: (labels) => {
-                console.log(labels)
-            },
-            error: (error) => {
-                console.log(error)
+                console.error(error)
+                this.isLoading.set(false)
             }
         })
     }

@@ -63,3 +63,11 @@ class ContractTag(ContractTagCreate):
     model_config = ConfigDict(from_attributes=True)
     id: UUID = Field(default_factory=uuid4)
     created_at: datetime
+
+class Progress(BaseModel):
+    total: int
+    labelled: int
+
+class ContractProgress(BaseModel):
+    contract_id: UUID
+    progress: Progress

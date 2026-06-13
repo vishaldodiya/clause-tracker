@@ -1,15 +1,17 @@
-<div class="relative w-full ">
-    <div class="flex gap-2 items-center cursor-pointer border-[#f6e8c8] bg-white border p-2 rounded-md" (click)="focusInput()">
+<div class="relative w-full h-full">
+    <div class="text-sm flex h-full gap-2 items-center cursor-pointer border-[#f6e8c8] bg-white border p-2 rounded-md" (click)="focusInput()">
         @for (item of selectedItems(); track `selected-${item.id}`) {
-            <span class="flex gap-2 border border-[#f6e8c8] rounded-full px-2 py-1">
-                {{ item.name }} <button class="cursor-pointer flex items-center justify-center w-7 h-7 border rounded-full p-1 border-[#f6e8c8]" type="button" (mousedown)="removeItem(item)">x</button>
+            <span class="flex gap-2 border border-[#f6e8c8] rounded-full px-2 py-0.5 items-center">
+                {{ item.name }} <button class="cursor-pointer flex items-center justify-center w-5 h-5 border rounded-full p-0.5 border-[#f6e8c8]" type="button" (mousedown)="removeItem(item)">x</button>
             </span>
         }
-        Select items
+        @if (!selectedItems().length) {
+            Select items
+        }
         <span class="ml-auto text-gray-400 text-xs">▾</span>
     </div>
     @if (focused()) {
-        <div class="absolute w-full bg-white border-[#f6e8c8] rounded-md p-4 max-h-72 overflow-scroll">
+        <div class="absolute w-full bg-white border border-[#f6e8c8] rounded-md p-4 max-h-72 overflow-scroll z-10">
             <label for="multi-select-text">
                 <input
                     #searchInput

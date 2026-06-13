@@ -7,3 +7,13 @@ export interface Contract {
     updated_at: Date
     tags: Tag[]
 }
+
+export interface Progress {
+    total: number
+    labelled: number
+}
+
+export interface ContractProgress {
+    contract_id: string
+    progress: Progress
+}

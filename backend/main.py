@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from controller.tag import TagController
 from controller.contract import ContractController
 from controller.clause import ClauseController
-from schemas.contract import Clause, ClauseUpdate, Contract, ContractCreate, Tag, TagCreate, Label, LabelCreate, Paragraph
+from controller.contract_progress import ContractProgressController
+from schemas.contract import Clause, ClauseUpdate, Contract, ContractCreate, Tag, TagCreate, Label, LabelCreate, Paragraph, ContractProgress
 from database import get_db
 from uuid import UUID
 
@@ -61,6 +62,10 @@ def create_label(label_data: LabelCreate, db: Session = Depends(get_db)):
 @app.get("/api/v1/clauses", response_model=list[Paragraph])
 def get_clauses(contract_id: UUID | None = None, db: Session = Depends(get_db)):
     return ClauseController.get_clauses(db=db, contract_id=contract_id)
+
+@app.get("/api/v1/progress", response_model=list[ContractProgress])
+def get_progress(db: Session = Depends(get_db)):
+    return ContractProgressController.get_all_contract_progress(db=db)
 
 @app.put("/api/v1/clauses/{clause_id}", response_model=Clause)
 def update_clause(clause_id: UUID, clause_data: ClauseUpdate, db: Session = Depends(get_db)):

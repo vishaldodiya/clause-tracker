@@ -1,31 +1,51 @@
 <div class="bg-[#f3ede2]">
+    <form [formGroup]="filterForm" class="grid grid-cols-3 gap-4 p-2 w-full">
+        <input formControlName="search" placeholder="Search..." class="border border-[#ebe6db] bg-white rounded-md p-2" type="text"/>
+        <multi-select formControlName="tags" [items]="tagSelctableItems()"/>
+        <button class="p-2 border-[#ebe6db] bg-white rounded-md ml-auto" (click)="onReset()">Reset</button>
+    </form>
     <table class="grid w-full grid-cols-[auto_auto_auto_auto_auto] border p-4 gap-4 border-[#ebe6db] rounded-md">
-        <thead class="grid col-span-5 grid-cols-subgrid text-sm border-b border-[#ebe6db] pb-2">
-            <tr class="grid col-span-5 grid-cols-subgrid text-left">
+        <thead class="grid col-span-6 grid-cols-subgrid text-sm border-b border-[#ebe6db] pb-2">
+            <tr class="grid col-span-6 grid-cols-subgrid text-left">
                 <th>Contract Name</th>
                 <th>Tags</th>
                 <th>Created at</th>
                 <th>Updated at</th>
+                <th>Progress</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody class="grid col-span-5 grid-cols-subgrid text-sm gap-4">
-            @for (contract of contracts(); track contract.id) {
-                <tr class="grid col-span-5 grid-cols-subgrid text-left border-b border-[#ebe6db] p-2">
-                    <td>{{contract.name}}</td>
-                    <td class="flex gap-2 items-center">
-                        @for (tag of contract.tags; track tag.id) {
-                            <div class="border border-[#ebe6db] rounded-md bg-[#f6e8c8] p-2">{{tag.name}}</div>
-                        }
-                    </td>
-                    <td>{{contract.created_at | date:'medium'}}</td>
-                    <td>{{contract.updated_at | date:'medium'}}</td>
-                    <td class="flex gap-2 items-center">
-                        <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md">Delete</button>
-                        <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md">Edit</button>
-                        <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md" (click)="openContract(contract.id)">Open</button>
-                    </td>
+        <tbody class="grid col-span-6 grid-cols-subgrid text-sm gap-4">
+            @if (isLoading()) {
+                <tr class="grid col-span-6 grid-cols-subgrid h-10">
+                    <td><loading/></td>
+                    <td><loading/></td>
+                    <td><loading/></td>
+                    <td><loading/></td>
+                    <td><loading/></td>
+                    <td><loading/></td>
                 </tr>
+            } @else {
+                @for (contract of filteredContracts(); track contract.id) {
+                    <tr class="grid col-span-6 grid-cols-subgrid text-left border-b border-[#ebe6db] p-2">
+                        <td>{{contract.name}}</td>
+                        <td class="flex gap-2 items-center">
+                            @for (tag of contract.tags; track tag.id) {
+                                <div class="border border-[#ebe6db] rounded-md bg-[#f6e8c8] p-2">{{tag.name}}</div>
+                            }
+                        </td>
+                        <td>{{contract.created_at | date:'medium'}}</td>
+                        <td>{{contract.updated_at | date:'medium'}}</td>
+                        <td>
+                            <progress-bar [progress]="progressMap().get(contract.id)?.progress" />
+                        </td>
+                        <td class="flex gap-2 items-center">
+                            <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md">Delete</button>
+                            <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md">Edit</button>
+                            <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md" (click)="openContract(contract)">Open</button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

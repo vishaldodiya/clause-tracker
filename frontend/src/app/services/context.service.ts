@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { Contract } from "../models/contract.model";
+import { Contract, Progress } from "../models/contract.model";
 import { ActivatedRoute } from "@angular/router";
 
 @Injectable({
@@ -9,7 +9,11 @@ export class ContextService {
     private _contract = signal<Contract | null>(null)
     readonly contract = this._contract.asReadonly()
 
-    setContract(contract: Contract) {
+    setContract(contract: Contract | null) {
         this._contract.set(contract)
+    }
+
+    clearContract() {
+        this._contract.set(null)
     }
 }
