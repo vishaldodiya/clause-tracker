@@ -33,7 +33,9 @@ export class ContractService {
             }
         })
 
-        formData.append('file', file)
+        const ext = file.name.split('.').pop()?.toLowerCase()
+        const mimeType = ext === 'md' ? 'text/markdown' : (file.type || 'text/plain')
+        formData.append('file', new Blob([file], { type: mimeType }), file.name)
         return this.http.post<Contract>(this.baseUrl, formData).pipe(
             tap((contract: Contract) => {
                 this._contracts.update((contracts) => [...contracts, contract])

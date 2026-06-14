@@ -27,6 +27,7 @@ export class ContractEditor {
 
     selectedClause = signal<Clause | null>(null)
     isLoading = signal<boolean>(false)
+    selectedFilterLabel = signal<string | null>(null)
 
     clauses = this.clauseService.clauses
     labels = this.labelService.labels
@@ -38,6 +39,22 @@ export class ContractEditor {
     labelOptionList = computed<SelectableItem[]>(() => {
         return this.labels().map((label) => ({ id: label.id, name: label.name }))
     })
+
+    usedLabelsWithCounts = computed(() => {
+        const labelNameMap = new Map(this.labels().map(l => [l.id, l.name]))
+        const countMap = new Map<string, { id: string; name: string; count: number }>()
+        for (const clause of this.clauses().flatMap(p => p.clauses)) {
+            if (!clause.label_id) continue
+            const entry = countMap.get(clause.label_id)
+            if (entry) entry.count++
+            else countMap.set(clause.label_id, { id: clause.label_id, name: labelNameMap.get(clause.label_id) ?? clause.label_id, count: 1 })
+        }
+        return Array.from(countMap.values())
+    })
+
+    toggleFilterLabel(labelId: string) {
+        this.selectedFilterLabel.update(current => current === labelId ? null : labelId)
+    }
 
     selectClause(clause: Clause) {
         this.selectedClause.set(clause)

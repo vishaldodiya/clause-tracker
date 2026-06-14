@@ -1,5 +1,21 @@
 <div class="grid h-full grid-cols-[3fr_minmax(0,1fr)] gap-4">
     <div class="flex flex-col gap-4 overflow-y-auto h-full border border-[#f2ede4] rounded-md p-2">
+        @if (usedLabelsWithCounts().length > 0) {
+            <div class="flex flex-wrap gap-2 pb-2 border-b border-[#f2ede4]">
+                @for (item of usedLabelsWithCounts(); track item.id) {
+                    <button
+                        class="px-2 py-1 rounded-full text-sm border cursor-pointer"
+                        [class.bg-[#dee7d5]]="selectedFilterLabel() === item.id"
+                        [class.border-[#a8c4a0]]="selectedFilterLabel() === item.id"
+                        [class.bg-white]="selectedFilterLabel() !== item.id"
+                        [class.border-[#f2ede4]]="selectedFilterLabel() !== item.id"
+                        (click)="toggleFilterLabel(item.id)"
+                    >
+                        {{ item.name }} <span class="text-xs opacity-60">({{ item.count }})</span>
+                    </button>
+                }
+            </div>
+        }
         @if (isLoading()) {
             <div class="h-20"><loading /></div>
             <div class="h-20"><loading /></div>
@@ -8,11 +24,11 @@
                 <div class="flex-inline gap-2">
                     @for (clause of paragraph.clauses; track clause.id) {
                         <span
-                            [class.border]="selectedClause() === clause"
                             [class.bg-[#f6e8c8]]="!clause.label_id && selectedClause() === clause"
-                            [class.bg-[#dee7d5]]="clause.label_id"
-                            [class.hover:bg-[#f6e8c8]]="!clause.label_id && selectedClause() !== clause"
-                            class="px-0.5 py-0.5 mr-1 cursor-pointer rounded-md"
+                            [class.bg-[#dee7d5]]="clause.label_id && (!selectedFilterLabel() || selectedFilterLabel() === clause.label_id)"
+                            [class.hover:bg-[#f6e8c8]]="!clause.label_id && selectedClause() !== clause && !selectedFilterLabel()"
+                            [class.opacity-25]="selectedFilterLabel() && clause.label_id !== selectedFilterLabel()"
+                            class="px-0.5 py-0.5 mr-1 cursor-pointer rounded-md transition-opacity hover:border"
                             (click)="selectClause(clause)"
                         >
                             {{ clause.content }}

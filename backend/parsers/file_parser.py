@@ -6,9 +6,6 @@ class FileParser:
         text = ""
         content = await file.read()
 
-        print("----------")
-        print(content)
-
         if not content:
             raise HTTPException(status_code=400, detail="Empty file uploaded")
 

@@ -9,11 +9,17 @@
                 <button class="border border-[#f6e8c8] rounded-md cursor-pointer p-2" (click)="closeDialog()">x</button>
             </div>
             <form [formGroup]="contractForm" class="flex flex-col gap-4 min-w-lg">
-                <label class="flex flex-col">
+                <label class="flex flex-col gap-1">
                     Name
                     <input formControlName="name" class="border bg-white rounded-md border-[#f6e8c8] p-2" type="text" />
+                    @if (nameCtrl.touched && nameCtrl.errors?.['required']) {
+                        <span class="text-red-500 text-sm">Name is required</span>
+                    }
+                    @if (nameCtrl.touched && nameCtrl.errors?.['maxlength']) {
+                        <span class="text-red-500 text-sm">Name must be 100 characters or less</span>
+                    }
                 </label>
-                <label class="flex flex-col">
+                <label class="flex flex-col gap-1">
                     Tags
                     <multi-select
                         formControlName="tags"
@@ -21,11 +27,19 @@
                         (createItem)="onTagCreate($event)"
                     />
                 </label>
-                <label class="flex flex-col">
+                <label class="flex flex-col gap-1">
                     Upload contract:
                     <input (change)="onFileChange($event)" class="border bg-white rounded-md border-[#f6e8c8] p-2 cursor-pointer" type="file" accept=".txt,.md" />
+                    @if (fileError()) {
+                        <span class="text-red-500 text-sm">{{ fileError() }}</span>
+                    }
                 </label>
-                <button (click)="onSubmit($event)" class="border bg-white rounded-md border-[#f6e8c8] p-2 cursor-pointer">Submit</button>
+                <button
+                    (click)="onSubmit($event)"
+                    [disabled]="!isFormValid()"
+                    class="border rounded-md p-2 cursor-pointer"
+                    [class]="isFormValid() ? 'bg-white border-[#f6e8c8]' : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'"
+                >Submit</button>
             </form>
         </div>
     </div>
