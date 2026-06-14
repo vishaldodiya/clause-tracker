@@ -1,4 +1,4 @@
-from models import ClauseModel
+from schemas.orm_models import ClauseModel
 from sqlalchemy.orm import Session
 from uuid import UUID
 

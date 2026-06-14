@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from uuid import UUID, uuid4
-from schemas.contract import ContractCreate
-from models import ContractModel, ContractTagModel
+from schemas.pydantic_models import ContractCreate
+from schemas.orm_models import ContractModel, ContractTagModel
 
 class ContractMutations:
     @staticmethod

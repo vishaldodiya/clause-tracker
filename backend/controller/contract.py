@@ -4,7 +4,7 @@ from mutations.contracts import ContractMutations
 from mutations.clauses import ClauseMutations
 from mutations.contract_tags import ContractTagsMutations
 from queries.contracts import ContractQueries
-from schemas.contract import Contract, ContractCreate
+from schemas.pydantic_models import Contract, ContractCreate
 from fastapi import UploadFile
 from parsers.file_parser import FileParser
 from database import transaction

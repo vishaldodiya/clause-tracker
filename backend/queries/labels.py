@@ -1,5 +1,5 @@
 
-from models import LabelModel
+from schemas.orm_models import LabelModel
 
 class LabelQueries:
     @staticmethod

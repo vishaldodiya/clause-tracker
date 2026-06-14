@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from uuid import UUID
-from models import ContractModel
+from schemas.orm_models import ContractModel
 
 class ContractQueries:
     @staticmethod

@@ -6,7 +6,7 @@ from controller.tag import TagController
 from controller.contract import ContractController
 from controller.clause import ClauseController
 from controller.contract_progress import ContractProgressController
-from schemas.contract import Clause, ClauseUpdate, Contract, ContractCreate, Tag, TagCreate, Label, LabelCreate, Paragraph, ContractProgress
+from schemas.pydantic_models import Clause, ClauseUpdate, Contract, ContractCreate, Tag, TagCreate, Label, LabelCreate, Paragraph, ContractProgress
 from database import get_db
 from uuid import UUID
 

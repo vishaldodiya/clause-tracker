@@ -2,28 +2,26 @@ import { Component, computed, inject, signal } from "@angular/core";
 import { Clause, Paragraph } from "../../models/caluse.model";
 import { MultiSelect, SelectableItem } from "../multi-select/multi-select";
 import { DatePipe } from "@angular/common";
-import { FormBuilder, ɵInternalFormsSharedModule, ReactiveFormsModule } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { ClauseService } from "../../services/clause.service";
 import { LabelService } from "../../services/label.service";
 import { Label } from "../../models/label.model";
 import { ContractService } from "../../services/contract.service";
 import { ContextService } from "../../services/context.service";
-import { ProgressService } from "../../services/progress.service";
 import { forkJoin, of } from "rxjs";
 import { Loading } from "../loading/loading";
 
 @Component({
     selector: 'contract-editor',
     templateUrl: './contract-editor.html',
-    imports: [MultiSelect, DatePipe, ɵInternalFormsSharedModule, ReactiveFormsModule, Loading]
+    imports: [MultiSelect, DatePipe, ReactiveFormsModule, Loading]
 })
 export class ContractEditor {
     private labelService = inject(LabelService)
     private activatedRoute = inject(ActivatedRoute)
     private clauseService = inject(ClauseService)
     private contractService = inject(ContractService)
-    private progressService = inject(ProgressService)
     private context = inject(ContextService)
     private fb = inject(FormBuilder)
 
@@ -91,8 +89,7 @@ export class ContractEditor {
         forkJoin({
             clauses: this.clauseService.getClauses(contractId),
             labels: this.labelService.getLabels(),
-            contract: requireContractData ? this.contractService.getContarct(contractId) : of(null),
-            progress: requireContractData ? this.progressService.getContractProgress() : of(null)
+            contract: requireContractData ? this.contractService.getContarct(contractId) : of(null)
         }).subscribe({
             next: (({ contract }) => {
                 if (contract) this.context.setContract(contract)

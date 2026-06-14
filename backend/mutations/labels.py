@@ -1,6 +1,6 @@
 
-from schemas.contract import LabelCreate
-from models import LabelModel
+from schemas.pydantic_models import LabelCreate
+from schemas.orm_models import LabelModel
 from uuid import uuid4
 
 class LabelMutations:

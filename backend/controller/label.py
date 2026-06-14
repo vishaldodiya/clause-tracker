@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from mutations.labels import LabelMutations
 from queries.labels import LabelQueries
 from mutations.labels import LabelMutations
-from schemas.contract import Label
-from schemas.contract import LabelCreate
+from schemas.pydantic_models import Label
+from schemas.pydantic_models import LabelCreate
 
 class LabelController:
     @staticmethod

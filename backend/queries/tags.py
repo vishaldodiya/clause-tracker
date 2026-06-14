@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import TagModel
+from schemas.orm_models import TagModel
 
 class TagsQueries:
     @staticmethod

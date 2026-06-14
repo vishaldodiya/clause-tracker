@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import database_exists, create_database
 from contextlib import contextmanager
+from schemas.orm_models import Base
 
 database_url = os.getenv("DATABASE_URL")
 
@@ -18,7 +19,6 @@ def get_session():
     return session
 
 def init_db():
-    from models import Base
     engine = get_engine()
     Base.metadata.create_all(engine)
 

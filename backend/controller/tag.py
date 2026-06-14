@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from mutations.tags import TagMutations
-from schemas.contract import Tag, TagCreate
+from schemas.pydantic_models import Tag, TagCreate
 from queries.tags import TagsQueries
 
 class TagController:

@@ -1,10 +1,10 @@
 from collections import defaultdict
 from sqlalchemy.orm import Session
 from mutations.clauses import ClauseMutations
-from schemas.contract import ClauseUpdate
+from schemas.pydantic_models import ClauseUpdate
 from queries.clauses import ClauseQueries
-from models import ClauseModel
-from schemas.contract import Paragraph
+from schemas.orm_models import ClauseModel
+from schemas.pydantic_models import Paragraph
 from uuid import UUID
 
 class ClauseController:

@@ -1,7 +1,7 @@
 from collections import defaultdict
 from database import Session
 from queries.clauses import ClauseQueries
-from schemas.contract import Progress, ContractProgress
+from schemas.pydantic_models import Progress, ContractProgress
 from uuid import UUID
 
 class ContractProgressController:

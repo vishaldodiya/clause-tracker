@@ -1,8 +1,8 @@
 import re
 from uuid import UUID, uuid4
 from sqlalchemy.orm import Session
-from schemas.contract import ClauseUpdate, Clause
-from models import ClauseModel
+from schemas.pydantic_models import ClauseUpdate, Clause
+from schemas.orm_models import ClauseModel
 
 class ClauseMutations:
     @staticmethod

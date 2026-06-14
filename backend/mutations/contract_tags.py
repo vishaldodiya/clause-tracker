@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 
-from models import ContractTagModel
+from schemas.orm_models import ContractTagModel
 
 class ContractTagsMutations:
     @staticmethod

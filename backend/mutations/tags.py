@@ -1,8 +1,8 @@
 from datetime import datetime
 from uuid import uuid4
 
-from models import TagModel
-from schemas.contract import TagCreate
+from schemas.orm_models import TagModel
+from schemas.pydantic_models import TagCreate
 from sqlalchemy.orm import Session
 
 class TagMutations:
