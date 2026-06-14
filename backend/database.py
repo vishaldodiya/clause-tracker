@@ -7,19 +7,13 @@ from schemas.orm_models import Base
 
 database_url = os.getenv("DATABASE_URL")
 
-def get_engine():
-    if not database_exists(database_url):
-        create_database(database_url)
+if not database_exists(database_url):
+    create_database(database_url)
 
-    return create_engine(database_url)
-
-def get_session():
-    engine = get_engine()
-    session = sessionmaker(bind=engine)
-    return session
+engine = create_engine(database_url)
+_SessionFactory = sessionmaker(bind=engine)
 
 def init_db():
-    engine = get_engine()
     Base.metadata.create_all(engine)
 
 @contextmanager
@@ -32,7 +26,7 @@ def transaction(db: Session):
         raise e
 
 def get_db():
-    db: Session = get_session()()
+    db: Session = _SessionFactory()
     try:
         yield db
     except Exception:
@@ -40,5 +34,3 @@ def get_db():
         raise
     finally:
         db.close()
-
-init_db()

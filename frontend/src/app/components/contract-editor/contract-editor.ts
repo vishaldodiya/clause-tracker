@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from "@angular/core";
-import { Clause, Paragraph } from "../../models/caluse.model";
+import { Clause, Paragraph } from "../../models/clause.model";
 import { MultiSelect, SelectableItem } from "../multi-select/multi-select";
 import { DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
@@ -61,7 +61,7 @@ export class ContractEditor {
             label_id: label && label.id
         }).subscribe({
             next: (clause: Clause) => {
-                console.log('uodted', this.clauses())
+                console.log('updated', this.clauses())
                 console.log(clause)
             },
             error: (error) => {
@@ -89,7 +89,7 @@ export class ContractEditor {
         forkJoin({
             clauses: this.clauseService.getClauses(contractId),
             labels: this.labelService.getLabels(),
-            contract: requireContractData ? this.contractService.getContarct(contractId) : of(null)
+            contract: requireContractData ? this.contractService.getContract(contractId) : of(null)
         }).subscribe({
             next: (({ contract }) => {
                 if (contract) this.context.setContract(contract)

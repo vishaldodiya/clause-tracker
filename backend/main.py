@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from controller.label import LabelController
@@ -7,10 +8,15 @@ from controller.contract import ContractController
 from controller.clause import ClauseController
 from controller.contract_progress import ContractProgressController
 from schemas.pydantic_models import Clause, ClauseUpdate, Contract, ContractCreate, Tag, TagCreate, Label, LabelCreate, Paragraph, ContractProgress
-from database import get_db
+from database import get_db, init_db
 from uuid import UUID
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

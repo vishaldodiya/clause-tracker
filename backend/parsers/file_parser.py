@@ -12,7 +12,7 @@ class FileParser:
         if not content:
             raise HTTPException(status_code=400, detail="Empty file uploaded")
 
-        if file.content_type == "text/plain":
+        if file.content_type in ("text/plain", "text/markdown"):
             text = content.decode("utf-8")
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported file type: {file.content_type}")

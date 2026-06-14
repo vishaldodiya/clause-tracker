@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { Observable, tap } from "rxjs";
-import { Clause, Paragraph } from "../models/caluse.model";
+import { Clause, Paragraph } from "../models/clause.model";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -14,12 +15,10 @@ export class ClauseService {
         return { total: all.length, labelled: all.filter(c => c.label_id).length }
     })
     private http = inject(HttpClient)
-    private baseUrl = 'http://localhost:8000/api/v1/clauses'
+    private baseUrl = `${environment.apiUrl}/api/v1/clauses`
 
     getClauses(id: string): Observable<Paragraph[]> {
-        const url = new URL(this.baseUrl)
-        url.searchParams.append('contract_id', id)
-        return this.http.get<Paragraph[]>(url.toString()).pipe(
+        return this.http.get<Paragraph[]>(`${this.baseUrl}?contract_id=${id}`).pipe(
             tap((clauses: Paragraph[]) => {
                 this._clauses.set(clauses)
             })

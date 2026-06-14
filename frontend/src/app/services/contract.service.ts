@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from "@angular/core";
 import { Contract } from "../models/contract.model";
 import { Observable, tap } from "rxjs";
 import { FormGroup } from "@angular/forms";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,7 @@ export class ContractService {
     private _contracts = signal<Contract[]>([])
     readonly contracts = this._contracts.asReadonly()
     private http = inject(HttpClient)
-    private baseUrl = 'http://localhost:8000/api/v1/contracts'
+    private baseUrl = `${environment.apiUrl}/api/v1/contracts`
 
     getContracts(): Observable<Contract[]> {
         return this.http.get<Contract[]>(this.baseUrl).pipe(
@@ -40,7 +41,7 @@ export class ContractService {
         )
     }
 
-    getContarct(id: string): Observable<Contract> {
+    getContract(id: string): Observable<Contract> {
         return this.http.get<Contract>(`${this.baseUrl}/${id}`)
     }
 }

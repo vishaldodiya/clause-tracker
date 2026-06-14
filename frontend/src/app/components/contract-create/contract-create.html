@@ -23,7 +23,7 @@
                 </label>
                 <label class="flex flex-col">
                     Upload contract:
-                    <input (change)="onFileChange($event)" class="border bg-white rounded-md border-[#f6e8c8] p-2 cursor-pointer" type="file" />
+                    <input (change)="onFileChange($event)" class="border bg-white rounded-md border-[#f6e8c8] p-2 cursor-pointer" type="file" accept=".txt,.md" />
                 </label>
                 <button (click)="onSubmit($event)" class="border bg-white rounded-md border-[#f6e8c8] p-2 cursor-pointer">Submit</button>
             </form>
