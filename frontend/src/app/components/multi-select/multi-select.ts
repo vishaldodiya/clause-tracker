@@ -24,7 +24,6 @@ export class MultiSelect implements ControlValueAccessor {
     selectedSet = computed(() => new Set(this.selectedItems().map(item => item.id)))
 
     createItem = output<string>()
-    refreshItems = output<void>()
 
     private onChange = (val: SelectableItem[]) => {}
     private onTouch = () => {}
@@ -76,11 +75,12 @@ export class MultiSelect implements ControlValueAccessor {
 
     toggleItem(item: SelectableItem) {
         this.selectedSet().has(item.id) ? this.removeItem(item) : this.selectItem(item)
+        this.focused.set(false)
+        this.query.set('')
     }
 
     focusInput() {
         this.focused.set(true)
-        this.refreshItems.emit()
         setTimeout(() => this.searchInput?.nativeElement?.focus(), 0)
     }
 

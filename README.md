@@ -4,14 +4,16 @@ A web application for legal teams to track and label clause types across multipl
 
 ## Overview
 
-The application provide functionality to upload a contract text file and later view that text file and each sentence of the contract can be marked label which can be used further in building ML models by using this as a traingdata. The application UI is intuitively created to make the labelling flow easy by providing user and proper feedback of each action. 
+The application provide functionality to upload a contract file and later view that file content. Each sentence of the contract can be marked with a label which can be used further in building ML models by using this as a traingdata. The application UI is intuitively created to make the labelling flow easy by providing user a proper feedback of each action. 
 
 ## Functional features
 
 - Upload contracts (plain text `.txt` or `.md`)
 - View contracts sentence by sentence and label each with a clause type.
-- Dashboard with search, filter by tag
-- Track labeling progress per contract
+- Filter and group the labelled sentence with label.
+- Dashboard with search, filter by tag.
+- Track labeling progress per contract.
+- Create form name and file format validation.
 
 ## Non-functional features
 
@@ -105,6 +107,9 @@ clause-tracker/
         └── pipes/      # Inline modifiers for template
 ```
 
+## Current Design
+![alt text](screenshots/current-design.png)
+
 ## Design Decisions
 
 ### Decision 1 — Separate Clause model for storing clause of each contract
@@ -165,6 +170,9 @@ On backend side for few option like creating a Contract, which require and db up
 
 ## How I'd Extend This
 
+## Scaled design with AI automation
+![alt text](screenshots/scaled-design.png)
+
 ### Scaling
 On Backend side, we have to scale the service and database to efficiently server the data and http request. 
 - REST requests are stateless, so they can be easily scales by multiple instances of container and load balancer.
@@ -182,7 +190,7 @@ On Frontend side, there are various refactoring nedded.
 - To load content faster while opening Contract editor we can pre-fetch the data before user take the action. like user hover on open button.
 - Lazy load the component based on route to reduce the size of bundle.
 - If the document is huge and while editing instead of loading all data at once we can do vertulization to only load the part of the content on the viewport to reduce the load on the DOM. 
-- We can have a period saving on contract editor page to bulk save the data, so it requires to keep a local copy of the data.
+- We can have a interval saving on contract editor page to bulk save the data, so it requires to keep a local copy of the data.
 - Support for bulk contract upload
 
 ### AI Features
@@ -202,10 +210,6 @@ On Frontend side, there are various refactoring nedded.
 ## Running Tests
 
 ```bash
-# Backend
-cd backend
-uv run pytest
-
 # Frontend
 cd frontend
 pnpm test

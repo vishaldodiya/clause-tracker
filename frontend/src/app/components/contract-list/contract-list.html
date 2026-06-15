@@ -1,7 +1,7 @@
 <div class="bg-[#f3ede2]">
     <form [formGroup]="filterForm" class="grid grid-cols-3 gap-4 p-2 w-full">
         <input formControlName="search" placeholder="Search..." class="border border-[#ebe6db] bg-white rounded-md p-2" type="text"/>
-        <multi-select formControlName="tags" [items]="tagSelctableItems()"/>
+        <multi-select formControlName="tags" [items]="tagSelctableItems()">Filter by tags</multi-select>
         <button class="p-2 border-[#ebe6db] bg-white rounded-md ml-auto" (click)="onReset()">Reset</button>
     </form>
     <table class="grid w-full grid-cols-[auto_auto_auto_auto_auto] border p-4 gap-4 border-[#ebe6db] rounded-md">
