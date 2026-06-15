@@ -176,6 +176,7 @@ On backend side for few option like creating a Contract, which require and db up
 ### Scaling
 On Backend side, we have to scale the service and database to efficiently server the data and http request. 
 - REST requests are stateless, so they can be easily scales by multiple instances of container and load balancer.
+- Add support for authentication flow to auditing user data and governance. 
 
 For relational database there are various options.
 - First to manage huge amount of data we can shard the data in multiple databases (e.g sharding based on contract name). 
@@ -204,7 +205,6 @@ On Frontend side, there are various refactoring nedded.
 - Authentication support and auditing user changes. With authorised user we can track those user data on database like who updated the contract or clause. We need a User table.
 - Support for bulk contract upload.
 - Pagination for contract
-- Label based filtering on clauses, showing label with the clasue.
 - Audit history for the label changes on the clause, means we can have a versioning mechanism and audio previous change history as well.
 
 ## Running Tests

@@ -26,22 +26,28 @@
                     <td><loading/></td>
                 </tr>
             } @else {
-                @for (contract of filteredContracts(); track contract.id) {
-                    <tr class="grid col-span-6 grid-cols-subgrid text-left border-b border-[#ebe6db] p-2">
-                        <td>{{contract.name}}</td>
-                        <td class="flex gap-2 items-center">
-                            @for (tag of contract.tags; track tag.id) {
-                                <div class="border border-[#ebe6db] rounded-md bg-[#f6e8c8] p-2">{{tag.name}}</div>
-                            }
-                        </td>
-                        <td>{{contract.created_at | date:'medium'}}</td>
-                        <td>{{contract.updated_at | date:'medium'}}</td>
-                        <td>
-                            <progress-bar [progress]="progressMap().get(contract.id)?.progress" />
-                        </td>
-                        <td class="flex gap-2 items-center">
-                            <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md" (click)="openContract(contract)">Open</button>
-                        </td>
+                @if (filteredContracts().length > 0) {
+                    @for (contract of filteredContracts(); track contract.id) {
+                        <tr class="grid col-span-6 grid-cols-subgrid text-left border-b border-[#ebe6db] p-2">
+                            <td>{{contract.name}}</td>
+                            <td class="flex gap-2 items-center">
+                                @for (tag of contract.tags; track tag.id) {
+                                    <div class="border border-[#ebe6db] rounded-md bg-[#f6e8c8] p-2">{{tag.name}}</div>
+                                }
+                            </td>
+                            <td>{{contract.created_at | date:'medium'}}</td>
+                            <td>{{contract.updated_at | date:'medium'}}</td>
+                            <td>
+                                <progress-bar [progress]="progressMap().get(contract.id)?.progress" />
+                            </td>
+                            <td class="flex gap-2 items-center">
+                                <button class="border cursor-pointer p-2 border-[#ebe6db] bg-white rounded-md" (click)="openContract(contract)">Open</button>
+                            </td>
+                        </tr>
+                    }
+                } @else {
+                    <tr>
+                        <td>No Contract Data</td>
                     </tr>
                 }
             }
