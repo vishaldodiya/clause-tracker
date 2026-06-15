@@ -67,7 +67,7 @@ export class ContractEditor {
 
         const selectedClause = this.selectedClause()
         const labels = this.clauseForm.value.labels
-        const label = Array.isArray(labels) ? labels[0] : null
+        const label = Array.isArray(labels) && labels[0] ? labels[0] : null
 
         if (!selectedClause) {
             return

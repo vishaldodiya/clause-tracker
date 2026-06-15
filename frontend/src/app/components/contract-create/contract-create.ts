@@ -27,7 +27,7 @@ export class ContractCreate {
 
     contractForm = this.fb.group({
         name: ['', [Validators.required, Validators.maxLength(100)]],
-        tags: [[]]
+        tags: [[] as SelectableItem[]]
     })
 
     get nameCtrl() { return this.contractForm.get('name')! }
