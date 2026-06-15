@@ -8,7 +8,7 @@ The application provide functionality to upload a contract text file and later v
 
 ## Functional features
 
-- Upload contracts (plain text `.txt`)
+- Upload contracts (plain text `.txt` or `.md`)
 - View contracts sentence by sentence and label each with a clause type.
 - Dashboard with search, filter by tag
 - Track labeling progress per contract
@@ -61,6 +61,29 @@ docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
 ```
 
 Frontend served at http://localhost:80.
+
+## Screenshots
+
+Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+Create contract dialog
+![alt text](screenshots/create-contract.png)
+
+Tag filtered view
+![alt text](screenshots/contract-list-tag-filter.png)
+
+Contract editor initial screen
+![alt text](screenshots/contract-edit-initial.png)
+
+Selected clause screen
+![alt text](screenshots/contract-edit-selected.png)
+
+Clause label editor
+![alt text](screenshots/contract-edit-label-selection.png)
+
+Clause filtering
+![alt text](screenshots/contract-edit-filtering.png)
 
 ## Project Structure
 
