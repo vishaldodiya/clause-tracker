@@ -10,6 +10,7 @@ import { Label } from "../../models/label.model";
 import { ContractService } from "../../services/contract.service";
 import { ContextService } from "../../services/context.service";
 import { forkJoin, of } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { Loading } from "../loading/loading";
 
 @Component({
@@ -103,18 +104,12 @@ export class ContractEditor {
 
         this.isLoading.set(true)
         forkJoin({
-            clauses: this.clauseService.getClauses(contractId),
-            labels: this.labelService.getLabels(),
-            contract: requireContractData ? this.contractService.getContract(contractId) : of(null)
-        }).subscribe({
-            next: (({ contract }) => {
-                if (contract) this.context.setContract(contract)
-                this.isLoading.set(false)
-            }),
-            error: (error) => {
-                console.error(error)
-                this.isLoading.set(false)
-            }
+            clauses: this.clauseService.getClauses(contractId).pipe(catchError(() => of(null))),
+            labels: this.labelService.getLabels().pipe(catchError(() => of(null))),
+            contract: requireContractData ? this.contractService.getContract(contractId).pipe(catchError(() => of(null))) : of(null)
+        }).subscribe(({ contract }) => {
+            if (contract) this.context.setContract(contract)
+            this.isLoading.set(false)
         })
     }
 }
