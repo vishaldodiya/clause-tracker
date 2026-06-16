@@ -192,6 +192,7 @@ On Frontend side, there are various refactoring nedded.
 - If the document is huge and while editing instead of loading all data at once we can do vertulization to only load the part of the content on the viewport to reduce the load on the DOM. 
 - We can have a interval saving on contract editor page to bulk save the data, so it requires to keep a local copy of the data.
 - Support for bulk contract upload
+- Support for formatted document like pdf and docx, we can use doc to html parser to get a dom and it that for marking clauses.  
 
 ### AI Features
 - When we parse the contract document in the backend we can process the document in a batch with LLM model with a system prompt listing instruction on how to parse and known label for the clauses. This will return a suggested label for each clause with confidence score. Which later user can confirm or overide it.
