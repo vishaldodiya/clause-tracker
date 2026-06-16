@@ -20,8 +20,8 @@ class ContractController:
             return contract
 
     @staticmethod
-    def get_contracts(db: Session, limit: int = 10, offset: int = 0) -> list[Contract]:
-        return ContractQueries.get_contracts(db=db, limit=limit, offset=offset)
+    def get_contracts(db: Session) -> list[Contract]:
+        return ContractQueries.get_contracts(db=db)
 
     @staticmethod
     def get_contract_by_id(db: Session, contract_id: UUID) -> Contract | None:

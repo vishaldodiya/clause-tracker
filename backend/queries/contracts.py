@@ -4,8 +4,8 @@ from schemas.orm_models import ContractModel
 
 class ContractQueries:
     @staticmethod
-    def get_contracts(db: Session, limit: int = 10, offset: int = 0) -> list[ContractModel]:
-        return db.query(ContractModel).limit(limit).offset(offset).all()
+    def get_contracts(db: Session) -> list[ContractModel]:
+        return db.query(ContractModel).all()
 
     @staticmethod
     def get_contract_by_id(db: Session, contract_id: UUID) -> ContractModel | None:

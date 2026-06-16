@@ -28,7 +28,7 @@
             } @else {
                 @if (filteredContracts().length > 0) {
                     @for (contract of filteredContracts(); track contract.id) {
-                        <tr class="grid col-span-6 grid-cols-subgrid text-left border-b border-[#ebe6db] p-2">
+                        <tr class="grid col-span-6 grid-cols-subgrid text-left border-b border-[#ebe6db] p-2 items-center">
                             <td>{{contract.name}}</td>
                             <td class="flex gap-2 items-center">
                                 @for (tag of contract.tags; track tag.id) {
