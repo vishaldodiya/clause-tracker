@@ -205,6 +205,8 @@ On Frontend side, there are various refactoring nedded.
 - Support for bulk contract upload.
 - Pagination for contract
 - Audit history for the label changes on the clause, means we can have a versioning mechanism and audio previous change history as well.
+- UI monitoring to see user experience and UI issues
+- Logs to track issue and failures
 
 ## Running Tests
 
