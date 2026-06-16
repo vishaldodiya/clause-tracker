@@ -4,6 +4,7 @@ import { Contract } from "../models/contract.model";
 import { Observable, tap } from "rxjs";
 import { FormGroup } from "@angular/forms";
 import { environment } from "../../environments/environment";
+import { SelectableItem } from "../components/multi-select/multi-select";
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,7 @@ export class ContractService {
 
     getContracts(): Observable<Contract[]> {
         return this.http.get<Contract[]>(this.baseUrl).pipe(
+            // Mid intercept and update local state
             tap(contracts => this._contracts.set(contracts))
         )
     }
@@ -25,7 +27,7 @@ export class ContractService {
 
         Object.entries(form.value).forEach(([key, value]) => {
             if (Array.isArray(value)) {
-                (value as any[]).forEach(item =>
+                (value as SelectableItem[]).forEach(item =>
                     formData.append(key, typeof item === 'object' ? item.id : item)
                 )
             } else if (value !== null && value !== undefined) {
@@ -34,6 +36,7 @@ export class ContractService {
         })
 
         const ext = file.name.split('.').pop()?.toLowerCase()
+        // for md file mimetype sometimes diffrent.
         const mimeType = ext === 'md' ? 'text/markdown' : (file.type || 'text/plain')
         formData.append('file', new Blob([file], { type: mimeType }), file.name)
         return this.http.post<Contract>(this.baseUrl, formData).pipe(

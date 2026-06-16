@@ -10,6 +10,7 @@ export interface SelectableItem {
     selector: 'multi-select',
     templateUrl: './multi-select.html',
     providers: [{
+        // when multi-select is used then this class will be used as a value accessor
         provide: NG_VALUE_ACCESSOR,
         useExisting: MultiSelect,
         multi: true
@@ -66,6 +67,8 @@ export class MultiSelect implements ControlValueAccessor {
 
     removeItem(item: SelectableItem) {
         this.selectedItems.update(items => items.filter(i => i !== item))
+        // to update the form control value
+        this.onChange(this.selectedItems())
     }
 
     updateQuery(event: Event) {
@@ -81,6 +84,7 @@ export class MultiSelect implements ControlValueAccessor {
 
     focusInput() {
         this.focused.set(true)
+        this.onTouch()
         setTimeout(() => this.searchInput?.nativeElement?.focus(), 0)
     }
 
@@ -107,6 +111,7 @@ export class MultiSelect implements ControlValueAccessor {
 
     writeValue(val: SelectableItem[]): void {
         this.selectedItems.set(val ?? [])
+        this.onChange(this.selectedItems())
     }
 
     registerOnChange(fn: any): void {

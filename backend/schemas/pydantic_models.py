@@ -17,6 +17,7 @@ class ContractCreate(BaseModel):
     tags: list[UUID] = []
 
     @classmethod
+    # To handle multipart form data, due to file upload
     def as_form(cls, name: str = Form(...), tags: list[UUID] = Form(default=[])) -> "ContractCreate":
         return cls(name=name, tags=tags)
 

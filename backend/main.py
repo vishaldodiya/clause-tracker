@@ -26,6 +26,7 @@ app.add_middleware(
 )
 
 @app.get("/api/v1/contracts", response_model=list[Contract])
+# Dependency injection to keep db instance and closing clean
 def get_contracts(db: Session = Depends(get_db)):
     return ContractController.get_contracts(db=db)
 

@@ -59,6 +59,7 @@ export class ContractCreate {
 
     onSubmit(event: MouseEvent) {
         event.preventDefault()
+        // Force all form field into touched state
         this.contractForm.markAllAsTouched()
 
         const file = this.selectedFile()

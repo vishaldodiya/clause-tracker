@@ -11,14 +11,18 @@ if not database_exists(database_url):
     create_database(database_url)
 
 engine = create_engine(database_url)
+# re-usable session creator based on the engine
 _SessionFactory = sessionmaker(bind=engine)
 
 def init_db():
+    # inspect all sqlalchemy base inherited models and create them if not exists.
     Base.metadata.create_all(engine)
 
 @contextmanager
 def transaction(db: Session):
     try:
+        # let caller do the DB related work, 
+        # once they are done successfully then execute next
         yield
         db.commit()
     except Exception as e:

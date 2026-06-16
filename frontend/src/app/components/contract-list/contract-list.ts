@@ -8,7 +8,7 @@ import { ProgressBar } from "../progress-bar/progress-bar";
 import { MultiSelect, SelectableItem } from "../multi-select/multi-select";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { debounceTime, distinctUntilChanged, map } from "rxjs";
+import { catchError, debounceTime, distinctUntilChanged, forkJoin, map, of } from "rxjs";
 import { Loading } from "../loading/loading";
 
 @Component({
@@ -51,14 +51,16 @@ export class ContractList {
 
             const hasAllTags = selectedTagIds.length === 0 || selectedTagIds.every(id => contractTagIds.includes(id))
 
-            return c.name.includes(query) && hasAllTags
+            return c.name.toLowerCase().includes(query.toLowerCase()) && hasAllTags
         })
     })
     tagSelctableItems = computed<SelectableItem[]>(() => {
         const map = new Map<string, string>()
         this.contracts().forEach((contract) => {
             contract.tags.forEach((tag) => {
-                map.set(tag.id, tag.name)
+                if (!map.has(tag.id)) {
+                    map.set(tag.id, tag.name)
+                }
             })
         })
         return Array.from(map.entries()).map(([key, value]) => ({ id: key, name: value }))
@@ -75,29 +77,12 @@ export class ContractList {
     })
 
     ngOnInit() {
-        this.loadContracts()
-        this.loadProgress()
-    }
-
-    loadProgress() {
-        this.progressService.getContractProgress().subscribe({
-            next: (val) => {
-                console.log(val)
-            },
-            error: (error) => {
-                console.error(error)
-            }
-        })
-    }
-
-    loadContracts() {
         this.isLoading.set(true)
-        this.contractService.getContracts().subscribe({
-            next: () => this.isLoading.set(false),
-            error: (error) => {
-                console.error(error)
-                this.isLoading.set(false)
-            }
+        forkJoin({
+            progress: this.progressService.getContractProgress().pipe(catchError(() => of(null))),
+            contracts: this.contractService.getContracts().pipe(catchError(() => of(null)))
+        }).subscribe(() => {
+            this.isLoading.set(false)
         })
     }
 

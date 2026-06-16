@@ -205,6 +205,7 @@ On Frontend side, there are various refactoring nedded.
 
 ### Other Improvements
 - Authentication support and auditing user changes. With authorised user we can track those user data on database like who updated the contract or clause. We need a User table.
+- Error handlings on UI side
 - Support for bulk contract upload.
 - Pagination for contract
 - Audit history for the label changes on the clause, means we can have a versioning mechanism and audio previous change history as well.

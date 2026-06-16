@@ -26,6 +26,7 @@
             @if (filteredItems().length > 0) {
                 <div class="flex flex-col p-4 gap-2">
                     @for (item of filteredItems(); track `dropdown-${item.id}`) {
+                        <!-- mousedown is needed to prevent dropdown from closing as it is called first -->
                         <div class="border-b border-[#f6e8c8] p-1 cursor-pointer" (mousedown)="$event.preventDefault()" (click)="toggleItem(item)">
                             <span>
                                 {{ selectedSet().has(item.id) ? '✓' : '' }}

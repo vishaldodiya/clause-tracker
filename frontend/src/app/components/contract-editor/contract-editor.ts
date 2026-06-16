@@ -60,6 +60,7 @@ export class ContractEditor {
     selectClause(clause: Clause) {
         this.selectedClause.set(clause)
         const selectedLabel = this.labels().find((label) => label.id === clause.label_id)
+        // To override form key value
         this.clauseForm.patchValue({ labels: selectedLabel ? [selectedLabel] : [] })
     }
 
@@ -79,6 +80,7 @@ export class ContractEditor {
             label_id: label && label.id
         }).subscribe({
             next: (clause: Clause) => {
+                this.selectedClause.set(clause)
                 console.log(clause)
             },
             error: (error) => {
