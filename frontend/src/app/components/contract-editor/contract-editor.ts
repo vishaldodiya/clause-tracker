@@ -78,7 +78,6 @@ export class ContractEditor {
             label_id: label && label.id
         }).subscribe({
             next: (clause: Clause) => {
-                console.log('updated', this.clauses())
                 console.log(clause)
             },
             error: (error) => {

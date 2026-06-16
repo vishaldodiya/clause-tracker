@@ -106,7 +106,6 @@ export class MultiSelect implements ControlValueAccessor {
     }
 
     writeValue(val: SelectableItem[]): void {
-        console.log("form write value", val)
         this.selectedItems.set(val ?? [])
     }
 

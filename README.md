@@ -127,7 +127,7 @@ For most of the resources like contract, clause, tags etc I have created a seper
 ### Decision 5 - Loading state on component before data is received
 Loading state was added intermediatary to show user that something is happening on the page, its a important user feedback. This solves problem of transient blank screen when data is loading. Once the data is available it fills up UI with real data. Currently in my prototype I am tracking statelevel loading signals. But it will not scale if there are multiple section of component require loading in different way (which require managing multiple state). To support in larger app, using query manager like Tanstack Query (similar to React Requer) to track each individual resource's loading state. 
 
-### Decision 6 - Why support for adding new Tags and Label from item selector
+### Decision 6 - Why adding a new Tags and Label from item selector is supported
 To make system more open instead of defining predefined Tags and Labels it is more useful to create those resources in case it is not available. And once it is created it can be used in future selection. Also this is added as a part of selection process only so that user do not have to jump between multiple screens to create one single resource. This approach required more steps to sync back the created resource and use that new resource. 
 
 ### Decision 7 - Split panes UX in the contract editor
@@ -140,17 +140,16 @@ At top of the navbar I wanted to show which contract is being presented, their p
 When opening contract editor I require many data to show on the page which includes, clasues, contract and labels. With forJoin I can fire them parallelly and manage state udpate once all the data is received. With this I can control loading state of the editor component. This make the onInit hook clean by managing single observer. The drawback of the approach is I am making network request from client, which can be solved if I create a seperate endpoint and make parallel call from backend. Or even better use GraphQL to orchastrate the data. But it will increase the scope of the prototype.
 
 ### Decision 10 - Custom MultiSelect implementation with ControlValueAccessor
-Insead of adding a new UI library to showcase my re-usable component designing skill I created this MultiSelect component. This selector have various state like change in selected items, addition of new items etc. That requires many signal for parent as well and prop drilling. So to make it seamlessly usable in formGroup, I implemented it with ControlValueAccessor, which makes it easy to manage state by just using formControlName similar to what we use with input. It does make the component bit complex but the ease of use make all that efforts worth it.
+Insead of adding a new UI library, I wanted to showcase my re-usable component designing skill, and for that I created this MultiSelect component. This selector have various state like change in selected items, addition of new items etc. That requires many signal for parent as well and prop drilling. So to make it seamlessly usable in formGroup, I implemented it with ControlValueAccessor, which makes it easy to manage state by just using formControlName similar to what we use with input. It does make the component bit complex but the ease of use make all that efforts worth it.
 
 ### Decision 11 - computed() signals for search/filter instead of handling on change event
 Filtered contracts is a computed signal which is derived from search query and tags list. Angular re-evaluate it automatically once the signal vlaue changes. Another approach would be a pipe cretation for filtering but the state of filtering is available in list component and passing arguments can become messy in pipe.
 
 ### Decision 12 - Standalone components
-To simplyfy mental modal that each component will have their own imports and also is an best practice from Angular. NgModule would have to declare everything seperately (too much boilerplate) and its hard to maintain and test. 
+To simplyfy mental modal that each component will have their own imports and also is an best practice from Angular. With NgModule, I would have to declare everything seperately (too much boilerplate) and its hard to maintain and test. 
 
 ### Decision 13 - Multiple operations are wrapped with Transaction contextmanager
 On backend side for few option like creating a Contract, which require and db update on Contract_tag mapping and also creation of clause entries. These operations are atomic individually but they are still a separate call. So to make sure if any of the operation fails we have a way to rollback. So python context manager was useful to create transaction context and if any of the operation fails rollback is called on db. Each individual operation does not call commit to not updated the changes on db yet, keep it in proxy. But the changes will be commited in the transaction at once.
-
 
 ## API Endpoints
 
