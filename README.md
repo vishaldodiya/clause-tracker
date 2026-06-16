@@ -200,6 +200,8 @@ On Frontend side, there are various refactoring nedded.
 - On the frontend side we can distinguise each label marked by AI in a different color like orange and whichever is approved by user will be marked as green so that user will know which one are done. Same for the process bar, instead of all green it should have green, orange and white bars to show each of the progress.
 - One more thing is when we make AI to label the clauses the process can take time. On this case we need a message queue to process the data and also store the contract data in pending state. Once the data is processed it can be marked as done and user can audit it. 
 
+#### Sample UI with Auto labelling
+![alt text](screenshots/auto-labelling-sample-ui.png)
 
 ### Other Improvements
 - Authentication support and auditing user changes. With authorised user we can track those user data on database like who updated the contract or clause. We need a User table.
